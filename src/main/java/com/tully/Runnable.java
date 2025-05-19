@@ -6,7 +6,7 @@ public class Runnable {
     public static void main(String[] args) {
         FoodWorker fd = new FoodWorker();
 
-        LinkedHashMap<String, double[]> foods = fd.search("kraft", 10);
+        LinkedHashMap<String, double[]> foods = fd.search("cheese", 10);
 
         fd.printTable(foods);
     }

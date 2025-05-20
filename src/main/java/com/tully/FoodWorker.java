@@ -15,8 +15,6 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.LinkedHashMap;
-import java.util.Map;
 
 public class FoodWorker {
     // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
@@ -29,8 +27,7 @@ public class FoodWorker {
     private static final String API_KEY = "vBk2rRWZ4Xv3uGFLcequgOEv4iOTyXCCf1IKdzwc";
 
     private ArrayList<FoodItem> customFoods;
-
-    private ArrayList<FoodItem[]> customMeals; 
+    private ArrayList<ArrayList<FoodItem>> customMeals;
 
     public enum Sex {
         MALE,
@@ -66,10 +63,9 @@ public class FoodWorker {
      * 
      * @param foodQuery the food to search for in the database.
      * @param resultCount the number of foods that will be returned in the search.
-     * @return a LinkedHashMap where each key is a food item (String) and each value a double[] of elements in the order {Protein, Fat, Carbs, Calories}. This map maintains insertion order of keys.
-     */
-    // TODO: REFACTOR THIS CODE TO WORK WITH NEW FoodItem objects (for better readability + maybe better performance)
-    public LinkedHashMap<String, double[]> search(String foodQuery, int resultCount) {
+     * @return an ArrayList of FoodItems.
+     **/
+    public ArrayList<FoodItem> search(String foodQuery, int resultCount) {
         // API INFO/ESSENTIALS:
         // https://fdc.nal.usda.gov/api-guide
         // https://app.swaggerhub.com/apis/fdcnal/food-data_central_api/1.0.1#/FDC/getFoodsSearch
@@ -79,7 +75,7 @@ public class FoodWorker {
         // More info in the links above (It is likely that this value will not need to change)
         String dataType = "Survey%20%28FNDDS%29";
 
-        LinkedHashMap<String, double[]> foodOut = new LinkedHashMap<>();
+        ArrayList<FoodItem> foodOut = new ArrayList<>();
         try {
             // Sanitize user input and validate other parameters
             foodQuery = URLEncoder.encode(foodQuery, StandardCharsets.UTF_8.toString());
@@ -119,14 +115,14 @@ public class FoodWorker {
             } else {
                 // Error code descriptions can be found here: https://api.data.gov/docs/developer-manual/
                 System.out.println("FOOD SEARCH ERROR: HTTP CONNECTION FAILED WITH STATUS CODE " + status);
-                return new LinkedHashMap<>();
+                return new ArrayList<>();
             }
             if (br != null) { br.close(); }
             if (con != null) { con.disconnect(); }
 
             if (jo.getInt("totalHits") == 0) {
                 System.out.println("FOOD SEARCH WARNING: SEARCH '" + foodQuery + "' RETURNED NO RESULTS.");
-                return new LinkedHashMap<>();
+                return new ArrayList<>();
             }
  
             double protein, fat, carbs, cals;
@@ -138,11 +134,11 @@ public class FoodWorker {
                 // and whose values are arrays of the macros + calories. i.e. foodItem -> [Protein, Fat, Carbs, Calories]
                 for (int i = 0; i < foodArr.length(); i++) {
                     // Get the food returned by our request to the database
-                    JSONObject food = foodArr.getJSONObject(i);
-                    String foodName = food.getString("description").strip().replace(", NFS", "");
+                    JSONObject foodJSON = foodArr.getJSONObject(i);
+                    String foodName = foodJSON.getString("description").strip().replace(", NFS", "");
 
                     // Take the macronutrients and the calories
-                    JSONArray nutrientArray = food.getJSONArray("foodNutrients");
+                    JSONArray nutrientArray = foodJSON.getJSONArray("foodNutrients");
                     
                     for (int j = 0; j < nutrientArray.length(); j++) {
                         protein = nutrientArray.getJSONObject(0).optDouble("value", 0.0);
@@ -151,9 +147,8 @@ public class FoodWorker {
                         cals = nutrientArray.getJSONObject(3).optDouble("value", 0.0);
                     }
 
-                    // Add the food name as a key and its info array as the value (String -> double[4])
-                    double[] outList = {protein, fat, carbs, cals};
-                    foodOut.put(foodName, outList);
+                    FoodItem food = new FoodItem(foodName, protein, fat, carbs, cals);
+                    foodOut.add(food);
                 }
             }
         } catch (IOException e) {
@@ -163,30 +158,32 @@ public class FoodWorker {
         return foodOut;
     }
 
-    public LinkedHashMap<String, double[]> search(String foodQuery) {
+    public ArrayList<FoodItem> search(String foodQuery) {
         return search(foodQuery, 10);
     }
 
-    // TODO: This is for testing, and it may be removed in the future
-    public void printTable(LinkedHashMap<String, double[]> map) {
+    public void printTable(ArrayList<FoodItem> foodItems) {
         System.out.println("|---------------------------------------------|--------|--------|--------|------------|");
         System.out.println("    %-37s %12s %6s %9s %11s".formatted("Food", "Protein", "Fat", "Carbs", "Calories"));
         System.out.println("|---------------------------------------------|--------|--------|--------|------------|");
 
-        for (Map.Entry<String, double[]> entry : map.entrySet()) {
-            String key = entry.getKey();
-            double[] values = entry.getValue();
+        for (FoodItem food : foodItems) {
+            String name = food.getName();
+            double protein = food.getProtein();
+            double fat = food.getFat();
+            double carbs = food.getCarbs();
+            double cals = food.getCalories();
 
             // Name wraparound for long entries
-            if (key.length() <= 42) {
-                System.out.printf("%-45s %6.1fg %7.1fg %8.1fg %8.0f\n", key, values[0], values[1], values[2], values[3]);
-            } else if (key.length() <= 84) {
-                System.out.printf("%-45s %6.1fg %7.1fg %8.1fg %8.0f\n", key.substring(0,42), values[0], values[1], values[2], values[3]);
-                System.out.printf("%-42s\n", key.substring(42, Math.min(key.length(), 84)));
-            } else if (key.length() <= 126) {
-                System.out.printf("%-45s %6.1fg %7.1fg %8.1fg %8.0f\n", key.substring(0, 40), values[0], values[1], values[2], values[3]);
-                System.out.printf("%-42s\n", key.substring(42, 84));
-                System.out.printf("%-42s\n", key.substring(84, Math.min(key.length(), 126)));
+            if (name.length() <= 42) {
+                System.out.printf("%-45s %6.1fg %7.1fg %8.1fg %8.0f\n", name, protein, fat, carbs, cals);
+            } else if (name.length() <= 84) {
+                System.out.printf("%-45s %6.1fg %7.1fg %8.1fg %8.0f\n", name.substring(0,42), protein, fat, carbs, cals);
+                System.out.printf("%-42s\n", name.substring(42, Math.min(name.length(), 84)));
+            } else if (name.length() <= 126) {
+                System.out.printf("%-45s %6.1fg %7.1fg %8.1fg %8.0f\n", name.substring(0, 40), protein, fat, carbs, cals);
+                System.out.printf("%-42s\n", name.substring(42, 84));
+                System.out.printf("%-42s\n", name.substring(84, Math.min(name.length(), 126)));
             }
         }
     }
@@ -195,21 +192,19 @@ public class FoodWorker {
      * Calculate the total macronutrients + calories for any amount of foods.
      * Useful for calculating daily goals or other similar sums.
      * 
-     * @param map a map of food items to their respective macronutrient + calorie arrays.
+     * @param foodItems a map of food items to their respective macronutrient + calorie arrays.
      * @return a double[] of food information in the order [Protein, Fat, Carbs, Calories].
      */
-    public double[] calculateMacros(Map<String, double[]> map) {
+    public double[] calculateMacros(ArrayList<FoodItem> foodItems) {
         // The double[] is in the order {protein, fat, carbs, calories}
         double pSum, fSum, cSum, calSum;
         pSum = fSum = cSum = calSum = 0.0;
 
-        for (Map.Entry<String, double[]> entry : map.entrySet()) {
-            double[] values = entry.getValue();
-
-            pSum += values[0];
-            fSum += values[1];
-            cSum += values[2];
-            calSum += values[3];
+        for (FoodItem food : foodItems) {
+            pSum += food.getProtein();
+            fSum += food.getFat();
+            cSum += food.getCarbs();
+            calSum += food.getCalories();
         }
 
         return new double[]{pSum, fSum, cSum, calSum};
@@ -239,7 +234,6 @@ public class FoodWorker {
         }
     }
 
-
     public FoodItem createCustomFood(String name, double protein, double fat, double carbs, double calories) {
         FoodItem customFood = new FoodItem(name, protein, fat, carbs, calories);
         customFoods.add(customFood);
@@ -251,8 +245,12 @@ public class FoodWorker {
         customFoods.remove(food);
     }
 
-    public void createCustomMeal(FoodItem[] args) {
+    public void createCustomMeal(String name, ArrayList<FoodItem> args) {
         customMeals.add(args);
+    }
+
+    public void removeCustomMeal() {
+
     }
 
     public double poundsToKilos(double lb) {

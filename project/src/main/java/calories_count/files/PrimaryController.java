@@ -10,7 +10,7 @@ public class PrimaryController {
         App.setRoot("secondary");
     }
 
-     @FXML
+    @FXML
     private void switchToUserForm() throws IOException {
         App.setRoot("user_form");
     }

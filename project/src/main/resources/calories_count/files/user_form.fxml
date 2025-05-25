@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.control.*?>
+<?import javafx.geometry.Insets?>
+
+<VBox alignment="CENTER" spacing="10" xmlns="http://javafx.com/javafx/8.0.171"
+      xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="calories_count.files.UserFormController">
+    <padding>
+        <Insets top="20" bottom="20" left="20" right="20"/>
+    </padding>
+
+    <Label text="Enter Your Information" style="-fx-font-size: 18; -fx-font-weight: bold;" />
+
+    <TextField fx:id="nameField" promptText="Name" />
+    <TextField fx:id="ageField" promptText="Age" />
+    <ComboBox fx:id="genderBox" promptText="Gender" />
+    <TextField fx:id="weightField" promptText="Weight (lbs)" />
+    <TextField fx:id="heightField" promptText="Height (inches)" />
+
+    <Button text="Calculate BMI and BMR" onAction="#handleCalculate" />
+
+    <Label fx:id="bmiLabel" text="BMI: " />
+    <Label fx:id="bmrLabel" text="BMR: " />
+
+    <Button text="Back to Primary View" onAction="#goBack" />
+</VBox>
+

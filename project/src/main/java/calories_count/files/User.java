@@ -1,7 +1,10 @@
 package calories_count.files;
 
-public class User {
+import java.io.Serializable;
 
+public class User implements Serializable {
+    private static final long serialVersionUID = 1L;
+    
     private String name;
     private int age;
     private String gender;
@@ -16,7 +19,6 @@ public class User {
         this.height = height;
     }
 
-    // Getters and Setters
     public String getName() { return name; }
     public int getAge() { return age; }
     public String getGender() { return gender; }
@@ -27,5 +29,14 @@ public class User {
     public double calculateBMI() {
         if (height == 0) return 0;
         return (weight / (height * height)) * 703;
+    }
+
+    // Method for calculating BMR
+    public double calculateBMR() {
+        if (gender.equalsIgnoreCase("male")) {
+            return 66 + (6.23 * weight) + (12.7 * height) - (6.8 * age);
+        } else {
+            return 655 + (4.35 * weight) + (4.7 * height) - (4.7 * age);
+        }
     }
 }

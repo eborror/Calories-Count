@@ -4,6 +4,11 @@ public class FoodItem {
     private String name;
     private double protein, fat, carbs, calories;
 
+    public FoodItem() {
+        this.name = "";
+        this.protein = this.fat = this.carbs = this.calories = 0.0;
+    }
+
     public FoodItem(String name, double protein, double fat, double carbs, double calories) {
         if (protein < 0) {
             protein = 0;
@@ -19,10 +24,10 @@ public class FoodItem {
         }
         
         this.name = name.strip();
-        this.protein = protein;
-        this.fat = fat;
-        this.carbs = carbs;
-        this.calories = calories;
+        this.protein = Math.round(protein * 100.0) / 100.0;;
+        this.fat = Math.round(fat * 100.0) / 100.0;;
+        this.carbs = Math.round(carbs * 100.0) / 100.0;;
+        this.calories = Math.round(calories * 100.0) / 100.0;;
     }
 
     public String getName() {
@@ -63,5 +68,9 @@ public class FoodItem {
 
     public void setCalories(double calories) {
         this.calories = calories;
+    }
+
+    public String toString() {
+        return "%-45s %6.1fg %7.1fg %8.1fg %8.0f\n".formatted(name, this.getProtein(), this.getFat(), this.getCarbs(), this.getCalories());
     }
 }

@@ -27,7 +27,7 @@ public class FoodWorker {
     private static final String API_KEY = "vBk2rRWZ4Xv3uGFLcequgOEv4iOTyXCCf1IKdzwc";
 
     private ArrayList<FoodItem> customFoods;
-    private ArrayList<ArrayList<FoodItem>> customMeals;
+    private ArrayList<MealItem> customMeals;
 
     public enum Sex {
         MALE,
@@ -48,8 +48,26 @@ public class FoodWorker {
         EXTREME
     }
 
+    public enum DataType {
+        FOUNDATION("Foundation"),
+        SURVEY_FNDDS("Survey%20%28FNDDS%29"),
+        BRANDED("Branded"),
+        SR_LEGACY("SR%20Legacy");
+
+        private final String value;
+
+        DataType(String value) {
+            this.value = value;
+        }
+
+        public String toString() {
+            return value;
+        }
+    }
+
     public FoodWorker() {
-        customFoods = new ArrayList<>();
+        customFoods = new ArrayList<FoodItem>();
+        customMeals = new ArrayList<MealItem>();
     }
 
     /**
@@ -71,9 +89,9 @@ public class FoodWorker {
         // https://app.swaggerhub.com/apis/fdcnal/food-data_central_api/1.0.1#/FDC/getFoodsSearch
 
         // "dataType" in our urlString restricts the output to one of the following databases:
-        // Foundation, Survey%20%28FNDDS%29, Branded, SR%20Legacy
-        // More info in the links above (It is likely that this value will not need to change)
-        String dataType = "Survey%20%28FNDDS%29";
+        // Foundation, Survey_FNDDS, Branded, and SR_Legacy
+        // More info in the external links above
+        DataType dataType = DataType.SURVEY_FNDDS;
 
         ArrayList<FoodItem> foodOut = new ArrayList<>();
         try {
@@ -162,12 +180,16 @@ public class FoodWorker {
         return search(foodQuery, 10);
     }
 
-    public void printTable(ArrayList<FoodItem> foodItems) {
+    public ArrayList<FoodItem> search(String foodQuery, int resultCount, DataType dataType) {
+        return search(foodQuery, resultCount, dataType);
+    }
+
+    public void printTable(ArrayList<FoodItem> foods) {
         System.out.println("|---------------------------------------------|--------|--------|--------|------------|");
         System.out.println("    %-37s %12s %6s %9s %11s".formatted("Food", "Protein", "Fat", "Carbs", "Calories"));
         System.out.println("|---------------------------------------------|--------|--------|--------|------------|");
 
-        for (FoodItem food : foodItems) {
+        for (FoodItem food : foods) {
             String name = food.getName();
             double protein = food.getProtein();
             double fat = food.getFat();
@@ -192,15 +214,14 @@ public class FoodWorker {
      * Calculate the total macronutrients + calories for any amount of foods.
      * Useful for calculating daily goals or other similar sums.
      * 
-     * @param foodItems a map of food items to their respective macronutrient + calorie arrays.
+     * @param foods a map of food items to their respective macronutrient + calorie arrays.
      * @return a double[] of food information in the order [Protein, Fat, Carbs, Calories].
      */
-    public double[] calculateMacros(ArrayList<FoodItem> foodItems) {
-        // The double[] is in the order {protein, fat, carbs, calories}
+    public double[] calculateMacros(ArrayList<FoodItem> foods) {
         double pSum, fSum, cSum, calSum;
         pSum = fSum = cSum = calSum = 0.0;
 
-        for (FoodItem food : foodItems) {
+        for (FoodItem food : foods) {
             pSum += food.getProtein();
             fSum += food.getFat();
             cSum += food.getCarbs();
@@ -210,6 +231,16 @@ public class FoodWorker {
         return new double[]{pSum, fSum, cSum, calSum};
     }
 
+    /**
+     * Calculate the user's total daily energy expenditure given the following arguments:
+     * 
+     * @param weightKg Weight, in kilograms
+     * @param heightCm Height, in centimeters
+     * @param age Age, in years
+     * @param sex Sex, (Sex.MALE or Sex.FEMALE)
+     * @param activity Activity level, (Activity.SEDENTARY, Activity.LIGHT, Activity.MODERATE, Activity.HEAVY, Activity.EXTREME)
+     * @return an estimate of the number of calories the user expends daily
+     */
     public double dailyExpendedCalories(double weightKg, double heightCm, int age, Sex sex, Activity activity) {
         double totalExpenditure;
         if (sex == Sex.MALE) {
@@ -234,6 +265,16 @@ public class FoodWorker {
         }
     }
 
+    /**
+     * Calculate the user's BMI (body mass index)
+     * 
+     * @param weightKg Weight, in kilograms
+     * @param heightCm Height, in centimeters
+     */
+    public double getBMI(double weightKg, double heightCm) {
+        return weightKg / (heightCm * heightCm);
+    }
+
     public FoodItem createCustomFood(String name, double protein, double fat, double carbs, double calories) {
         FoodItem customFood = new FoodItem(name, protein, fat, carbs, calories);
         customFoods.add(customFood);
@@ -242,15 +283,60 @@ public class FoodWorker {
     }
 
     public void removeCustomFood(FoodItem food) {
-        customFoods.remove(food);
+        if (customFoods.contains(food)) {
+            customFoods.remove(food);
+        }
     }
 
-    public void createCustomMeal(String name, ArrayList<FoodItem> args) {
-        customMeals.add(args);
+    public void removeCustomFood(String name) {
+        for (FoodItem food : customFoods) {
+            if (food.getName().equals(name)) {
+                customFoods.remove(food);
+            }
+        }
     }
 
-    public void removeCustomMeal() {
+    public MealItem createCustomMeal(String name, ArrayList<FoodItem> foods) {
+        MealItem meal = new MealItem(name, foods);
+        customMeals.add(meal);
 
+        return meal;
+    }
+
+    public void removeCustomMeal(MealItem meal) {
+        if (customMeals.contains(meal)) {
+            customMeals.remove(meal);
+        }
+    }
+
+    public void removeCustomMeal(String name) {
+        for (MealItem meal : customMeals) {
+            if (meal.getName().equals(name)) {
+                customMeals.remove(meal);
+            }
+        }
+    }
+
+    public FoodItem getCustomFood(String name) {
+        for (FoodItem food : customFoods) {
+            if (food.getName().equals(name)) {
+                return food;
+            }
+        }
+
+        // If no matching food item is found
+        return new FoodItem();
+    }
+
+    public MealItem getCustomMeal(String name) {
+        for (MealItem meal : customMeals) {
+            if (meal.getName().equals(name)) {
+                return meal;
+            }
+        }
+
+        // If no matching meal item is found
+        return new MealItem();
     }
 
     public double poundsToKilos(double lb) {

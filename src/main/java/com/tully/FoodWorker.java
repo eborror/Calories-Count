@@ -26,8 +26,8 @@ public class FoodWorker {
     // Please don't abuse it thank you :)
     private static final String API_KEY = "vBk2rRWZ4Xv3uGFLcequgOEv4iOTyXCCf1IKdzwc";
 
-    private ArrayList<FoodItem> customFoods;
-    private ArrayList<MealItem> customMeals;
+    // private FoodList customFoods;
+    // private MealList customMeals;
 
     public enum Sex {
         MALE,
@@ -66,8 +66,8 @@ public class FoodWorker {
     }
 
     public FoodWorker() {
-        customFoods = new ArrayList<FoodItem>();
-        customMeals = new ArrayList<MealItem>();
+        // customFoods = new ArrayList<FoodItem>();
+        // customMeals = new ArrayList<MealItem>();
     }
 
     /**
@@ -81,9 +81,9 @@ public class FoodWorker {
      * 
      * @param foodQuery the food to search for in the database.
      * @param resultCount the number of foods that will be returned in the search.
-     * @return an ArrayList of FoodItems.
+     * @return a FoodList of FoodItems.
      **/
-    public ArrayList<FoodItem> search(String foodQuery, int resultCount) {
+    public FoodList search(String foodQuery, int resultCount) {
         // API INFO/ESSENTIALS:
         // https://fdc.nal.usda.gov/api-guide
         // https://app.swaggerhub.com/apis/fdcnal/food-data_central_api/1.0.1#/FDC/getFoodsSearch
@@ -133,14 +133,14 @@ public class FoodWorker {
             } else {
                 // Error code descriptions can be found here: https://api.data.gov/docs/developer-manual/
                 System.out.println("FOOD SEARCH ERROR: HTTP CONNECTION FAILED WITH STATUS CODE " + status);
-                return new ArrayList<>();
+                return new FoodList();
             }
             if (br != null) { br.close(); }
             if (con != null) { con.disconnect(); }
 
             if (jo.getInt("totalHits") == 0) {
                 System.out.println("FOOD SEARCH WARNING: SEARCH '" + foodQuery + "' RETURNED NO RESULTS.");
-                return new ArrayList<>();
+                return new FoodList();
             }
  
             double protein, fat, carbs, cals;
@@ -173,18 +173,18 @@ public class FoodWorker {
             System.out.println("FOOD QUERY ERROR: " + e);
         }
 
-        return foodOut;
+        return new FoodList(foodOut);
     }
 
-    public ArrayList<FoodItem> search(String foodQuery) {
+    public FoodList search(String foodQuery) {
         return search(foodQuery, 10);
     }
 
-    public ArrayList<FoodItem> search(String foodQuery, int resultCount, DataType dataType) {
+    public FoodList search(String foodQuery, int resultCount, DataType dataType) {
         return search(foodQuery, resultCount, dataType);
     }
 
-    public void printTable(ArrayList<FoodItem> foods) {
+    public void printTable(FoodList foods) {
         System.out.println("|---------------------------------------------|--------|--------|--------|------------|");
         System.out.println("    %-37s %12s %6s %9s %11s".formatted("Food", "Protein", "Fat", "Carbs", "Calories"));
         System.out.println("|---------------------------------------------|--------|--------|--------|------------|");
@@ -217,7 +217,7 @@ public class FoodWorker {
      * @param foods a map of food items to their respective macronutrient + calorie arrays.
      * @return a double[] of food information in the order [Protein, Fat, Carbs, Calories].
      */
-    public double[] calculateMacros(ArrayList<FoodItem> foods) {
+    public double[] calculateMacros(FoodList foods) {
         double pSum, fSum, cSum, calSum;
         pSum = fSum = cSum = calSum = 0.0;
 
@@ -275,69 +275,81 @@ public class FoodWorker {
         return weightKg / (heightCm * heightCm);
     }
 
-    public FoodItem createCustomFood(String name, double protein, double fat, double carbs, double calories) {
-        FoodItem customFood = new FoodItem(name, protein, fat, carbs, calories);
-        customFoods.add(customFood);
+    // public FoodItem createCustomFood(String name, double protein, double fat, double carbs, double calories) {
+    //     FoodItem customFood = new FoodItem(name, protein, fat, carbs, calories);
+    //     customFoods.add(customFood);
 
-        return customFood;
-    }
+    //     return customFood;
+    // }
 
-    public void removeCustomFood(FoodItem food) {
-        if (customFoods.contains(food)) {
-            customFoods.remove(food);
-        }
-    }
 
-    public void removeCustomFood(String name) {
-        for (FoodItem food : customFoods) {
-            if (food.getName().equals(name)) {
-                customFoods.remove(food);
-            }
-        }
-    }
+    // public FoodItem createCustomFood(String name, double[] foodInfo) {
+    //     if (foodInfo.length != 4) {
+    //         System.out.println("ERROR: foodInfo array must be length 4. {Protein, Fat, Carbs, Calories}");
+    //         return null;
+    //     }
+    //     FoodItem customFood = new FoodItem(name, foodInfo[0], foodInfo[1], foodInfo[2], foodInfo[3]);
+    //     customFoods.add(customFood);
 
-    public MealItem createCustomMeal(String name, ArrayList<FoodItem> foods) {
-        MealItem meal = new MealItem(name, foods);
-        customMeals.add(meal);
+    //     return customFood;
+    // }
 
-        return meal;
-    }
+    // public void removeCustomFood(FoodItem food) {
+    //     if (customFoods.contains(food)) {
+    //         customFoods.remove(food);
+    //     }
+    // }
 
-    public void removeCustomMeal(MealItem meal) {
-        if (customMeals.contains(meal)) {
-            customMeals.remove(meal);
-        }
-    }
+    // public void removeCustomFood(String name) {
+    //     for (FoodItem food : customFoods) {
+    //         if (food.getName().equals(name)) {
+    //             customFoods.remove(food);
+    //         }
+    //     }
+    // }
 
-    public void removeCustomMeal(String name) {
-        for (MealItem meal : customMeals) {
-            if (meal.getName().equals(name)) {
-                customMeals.remove(meal);
-            }
-        }
-    }
+    // public MealItem createCustomMeal(String name, FoodList foods) {
+    //     MealItem meal = new MealItem(name, foods);
+    //     customMeals.add(meal);
 
-    public FoodItem getCustomFood(String name) {
-        for (FoodItem food : customFoods) {
-            if (food.getName().equals(name)) {
-                return food;
-            }
-        }
+    //     return meal;
+    // }
 
-        // If no matching food item is found
-        return new FoodItem();
-    }
+    // public void removeCustomMeal(MealItem meal) {
+    //     if (customMeals.contains(meal)) {
+    //         customMeals.remove(meal);
+    //     }
+    // }
 
-    public MealItem getCustomMeal(String name) {
-        for (MealItem meal : customMeals) {
-            if (meal.getName().equals(name)) {
-                return meal;
-            }
-        }
+    // public void removeCustomMeal(String name) {
+    //     for (MealItem meal : customMeals) {
+    //         if (meal.getName().equals(name)) {
+    //             customMeals.remove(meal);
+    //         }
+    //     }
+    // }
 
-        // If no matching meal item is found
-        return new MealItem();
-    }
+    // public FoodItem getCustomFood(String name) {
+    //     for (FoodItem food : customFoods) {
+    //         if (food.getName().equals(name)) {
+    //             return food;
+    //         }
+    //     }
+
+    //     // If no matching food item is found
+    //     return new FoodItem();
+    // }
+
+    // public MealItem getCustomMeal(String name) {
+    //     for (MealItem meal : customMeals) {
+    //         if (meal.getName().equals(name)) {
+    //             return meal;
+    //         }
+    //     }
+
+    //     // If no matching meal item is found
+    //     return new MealItem();
+    // }
 
     public double poundsToKilos(double lb) {
         return lb / 2.205;

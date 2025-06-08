@@ -24,10 +24,11 @@ public class FoodItem {
         }
         
         this.name = name.strip();
-        this.protein = Math.round(protein * 100.0) / 100.0;;
-        this.fat = Math.round(fat * 100.0) / 100.0;;
-        this.carbs = Math.round(carbs * 100.0) / 100.0;;
-        this.calories = Math.round(calories * 100.0) / 100.0;;
+        // Round values to two decimal places
+        this.protein = Math.round(protein * 100.0) / 100.0;
+        this.fat = Math.round(fat * 100.0) / 100.0;
+        this.carbs = Math.round(carbs * 100.0) / 100.0;
+        this.calories = Math.round(calories * 100.0) / 100.0;
     }
 
     public String getName() {

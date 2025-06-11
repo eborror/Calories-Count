@@ -18,11 +18,16 @@
     <ComboBox fx:id="genderBox" promptText="Gender" />
     <TextField fx:id="weightField" promptText="Weight (lbs)" />
     <TextField fx:id="heightField" promptText="Height (inches)" />
+    <ComboBox fx:id="activityBox" promptText="Activity Level" />
 
-    <Button text="Calculate BMI and BMR" onAction="#handleCalculate" />
+    <Button text="Calculate BMI and TDEE" onAction="#handleCalculate" />
 
     <Label fx:id="bmiLabel" text="BMI: " />
-    <Label fx:id="bmrLabel" text="BMR: " />
+    <Label fx:id="tdeeLabel" text="TDEE: " />
+
+    <TextField fx:id="logWeightField" promptText="Enter weight"/>
+    <Button text="Log Weight" onAction="#handleLogWeight"/>
+    <ListView fx:id="weightHistoryList"/>
 
     <Button text="Back to Primary View" onAction="#goBack" />
 </VBox>

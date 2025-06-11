@@ -18,11 +18,17 @@ public class UserFormController implements Initializable {
     @FXML private TextField weightField;
     @FXML private TextField heightField;
     @FXML private Label bmiLabel;
-    @FXML private Label bmrLabel;
+    @FXML private ComboBox<String> activityBox;
+    @FXML private Label tdeeLabel;
+    @FXML private TextField logWeightField;
+    @FXML private ListView<String> weightHistoryList;
+
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         genderBox.setItems(FXCollections.observableArrayList("Male", "Female", "Other"));
+        activityBox.setItems(FXCollections.observableArrayList("Sedentary", "Lightly Active",
+                "Moderately Active", "Very Active", "Extra Active"));
 
         User previousUser = loadUserFromFile();
         if (previousUser != null) {
@@ -31,9 +37,13 @@ public class UserFormController implements Initializable {
             genderBox.setValue(previousUser.getGender());
             weightField.setText(String.valueOf(previousUser.getWeight()));
             heightField.setText(String.valueOf(previousUser.getHeight()));
+            activityBox.setValue(previousUser.getActivityLevel());
 
             bmiLabel.setText(String.format("BMI: %.2f", previousUser.calculateBMI()));
-            bmrLabel.setText(String.format("BMR: %.2f", previousUser.calculateBMR()));
+            tdeeLabel.setText(String.format("TDEE: %.2f", previousUser.calculateTDEE()));
+
+            App.currentUser = previousUser;
+            updateWeightHistory();
         }
 
         Platform.runLater(() -> genderBox.requestFocus()); // Keep name prompt text visible
@@ -46,17 +56,39 @@ public class UserFormController implements Initializable {
         String gender = genderBox.getValue();
         double weight = Double.parseDouble(weightField.getText());
         double height = Double.parseDouble(heightField.getText());
+        String activityLevel = activityBox.getValue();
 
-        User user = new User(name, age, gender, weight, height);
+        User user = new User(name, age, gender, weight, height, activityLevel);
         App.currentUser = user;
 
         saveUserToFile(user);
 
         double bmi = user.calculateBMI();
-        double bmr = user.calculateBMR();
+        double tdee = user.calculateTDEE();
 
         bmiLabel.setText(String.format("BMI: %.2f", bmi));
-        bmrLabel.setText(String.format("BMR: %.2f", bmr));
+        tdeeLabel.setText(String.format("TDEE: %.2f", tdee));
+    }
+
+    @FXML
+    private void handleLogWeight() {
+        if (App.currentUser == null) return;
+
+        try {
+            double newWeight = Double.parseDouble(logWeightField.getText());
+            App.currentUser.addWeightEntry(newWeight);
+            updateWeightHistory();
+            saveUserToFile(App.currentUser);
+            logWeightField.clear();
+        } catch (NumberFormatException ignored) {
+        }
+    }
+
+    private void updateWeightHistory() {
+        weightHistoryList.getItems().clear();
+        for (WeightEntry entry : App.currentUser.getWeightLog()) {
+            weightHistoryList.getItems().add(entry.toString());
+        }
     }
 
     @FXML
@@ -81,3 +113,4 @@ public class UserFormController implements Initializable {
     }
 
 }
+

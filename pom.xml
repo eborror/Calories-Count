@@ -4,6 +4,19 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.openjfx</groupId>
+                <artifactId>javafx-maven-plugin</artifactId>
+                <version>0.0.8</version>
+                <configuration>
+                    <mainClass>com.tully.MacroChart</mainClass>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
     <groupId>com.tully</groupId>
     <artifactId>caloriescount</artifactId>
     <version>1.0-SNAPSHOT</version>
@@ -20,7 +33,7 @@
             <version>20250107</version>
         </dependency>
 
-        <!-- <dependency>
+        <dependency>
             <groupId>org.openjfx</groupId>
             <artifactId>javafx-base</artifactId>
             <version>25-ea+17</version>
@@ -33,9 +46,9 @@
         </dependency>
 
         <dependency>
-            <groupId>org.kordamp.bootstrapfx</groupId>
-            <artifactId>bootstrapfx-core</artifactId>
-            <version>0.4.0</version>
-        </dependency> -->
+            <groupId>org.openjfx</groupId>
+            <artifactId>javafx-graphics</artifactId>
+            <version>25-ea+17</version>
+        </dependency>
     </dependencies>
 </project>

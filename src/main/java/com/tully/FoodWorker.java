@@ -2,18 +2,15 @@ package com.tully;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
-import java.net.URI;
-
 import java.io.IOException;
+import java.net.URI;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.security.InvalidParameterException;
-
 import org.json.JSONArray;
 import org.json.JSONObject;
-
 import java.util.ArrayList;
 
 public class FoodWorker {
@@ -66,8 +63,8 @@ public class FoodWorker {
     }
 
     public FoodWorker() {
-        // customFoods = new ArrayList<FoodItem>();
-        // customMeals = new ArrayList<MealItem>();
+        // customFoods = new FoodList();
+        // customMeals = new MealList();
     }
 
     /**
@@ -275,82 +272,6 @@ public class FoodWorker {
         return weightKg / (heightCm * heightCm);
     }
 
-    // public FoodItem createCustomFood(String name, double protein, double fat, double carbs, double calories) {
-    //     FoodItem customFood = new FoodItem(name, protein, fat, carbs, calories);
-    //     customFoods.add(customFood);
-
-    //     return customFood;
-    // }
-
-
-    // public FoodItem createCustomFood(String name, double[] foodInfo) {
-    //     if (foodInfo.length != 4) {
-    //         System.out.println("ERROR: foodInfo array must be length 4. {Protein, Fat, Carbs, Calories}");
-    //         return null;
-    //     }
-    //     FoodItem customFood = new FoodItem(name, foodInfo[0], foodInfo[1], foodInfo[2], foodInfo[3]);
-    //     customFoods.add(customFood);
-
-    //     return customFood;
-    // }
-
-    // public void removeCustomFood(FoodItem food) {
-    //     if (customFoods.contains(food)) {
-    //         customFoods.remove(food);
-    //     }
-    // }
-
-    // public void removeCustomFood(String name) {
-    //     for (FoodItem food : customFoods) {
-    //         if (food.getName().equals(name)) {
-    //             customFoods.remove(food);
-    //         }
-    //     }
-    // }
-
-    // public MealItem createCustomMeal(String name, FoodList foods) {
-    //     MealItem meal = new MealItem(name, foods);
-    //     customMeals.add(meal);
-
-    //     return meal;
-    // }
-
-    // public void removeCustomMeal(MealItem meal) {
-    //     if (customMeals.contains(meal)) {
-    //         customMeals.remove(meal);
-    //     }
-    // }
-
-    // public void removeCustomMeal(String name) {
-    //     for (MealItem meal : customMeals) {
-    //         if (meal.getName().equals(name)) {
-    //             customMeals.remove(meal);
-    //         }
-    //     }
-    // }
-
-    // public FoodItem getCustomFood(String name) {
-    //     for (FoodItem food : customFoods) {
-    //         if (food.getName().equals(name)) {
-    //             return food;
-    //         }
-    //     }
-
-    //     // If no matching food item is found
-    //     return new FoodItem();
-    // }
-
-    // public MealItem getCustomMeal(String name) {
-    //     for (MealItem meal : customMeals) {
-    //         if (meal.getName().equals(name)) {
-    //             return meal;
-    //         }
-    //     }
-
-    //     // If no matching meal item is found
-    //     return new MealItem();
-    // }
-
     public double poundsToKilos(double lb) {
         return lb / 2.205;
     }
@@ -366,4 +287,82 @@ public class FoodWorker {
     public double cmToInches(double cm) {
         return cm / 2.54;
     }
+
+    /* CURRENTLY UNUSED (MAY BE FULLY IMPLEMENTED LATER?)
+    public FoodItem createCustomFood(String name, double protein, double fat, double carbs, double calories) {
+        FoodItem customFood = new FoodItem(name, protein, fat, carbs, calories);
+        customFoods.add(customFood);
+
+        return customFood;
+    }
+
+
+    public FoodItem createCustomFood(String name, double[] foodInfo) {
+        if (foodInfo.length != 4) {
+            System.out.println("ERROR: foodInfo array must be length 4. {Protein, Fat, Carbs, Calories}");
+            return null;
+        }
+        FoodItem customFood = new FoodItem(name, foodInfo[0], foodInfo[1], foodInfo[2], foodInfo[3]);
+        customFoods.add(customFood);
+
+        return customFood;
+    }
+
+    public void removeCustomFood(FoodItem food) {
+        if (customFoods.contains(food)) {
+            customFoods.remove(food);
+        }
+    }
+
+    public void removeCustomFood(String name) {
+        for (FoodItem food : customFoods) {
+            if (food.getName().equals(name)) {
+                customFoods.remove(food);
+            }
+        }
+    }
+
+    public MealItem createCustomMeal(String name, FoodList foods) {
+        MealItem meal = new MealItem(name, foods);
+        customMeals.add(meal);
+
+        return meal;
+    }
+
+    public void removeCustomMeal(MealItem meal) {
+        if (customMeals.contains(meal)) {
+            customMeals.remove(meal);
+        }
+    }
+
+    public void removeCustomMeal(String name) {
+        for (MealItem meal : customMeals) {
+            if (meal.getName().equals(name)) {
+                customMeals.remove(meal);
+            }
+        }
+    }
+
+    public FoodItem getCustomFood(String name) {
+        for (FoodItem food : customFoods) {
+            if (food.getName().equals(name)) {
+                return food;
+            }
+        }
+
+        // If no matching food item is found
+        return new FoodItem();
+    }
+
+    public MealItem getCustomMeal(String name) {
+        for (MealItem meal : customMeals) {
+            if (meal.getName().equals(name)) {
+                return meal;
+            }
+        }
+
+        // If no matching meal item is found
+        return new MealItem();
+    }
+    */
 }

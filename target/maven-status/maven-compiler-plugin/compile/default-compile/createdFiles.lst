@@ -5,4 +5,5 @@ com\tully\FoodWorker$Sex.class
 com\tully\FoodItem.class
 com\tully\FoodWorker.class
 com\tully\FoodList.class
-com\tully\MealItem.class
+com\tully\MacroChart$1.class
+com\tully\MacroChart.class

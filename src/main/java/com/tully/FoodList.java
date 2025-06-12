@@ -3,6 +3,9 @@ package com.tully;
 import java.util.ArrayList;
 import java.util.Iterator;
 
+/**
+ * ArrayList wrapper class with useful food-related methods
+ */
 public class FoodList implements Iterable<FoodItem> {
     private ArrayList<FoodItem> foods;
 
@@ -43,6 +46,19 @@ public class FoodList implements Iterable<FoodItem> {
 
     public boolean contains(FoodItem food) {
         return foods.contains(food);
+    }
+
+    public double[] getFoodInfo() {
+        // {protein, fat, carbs, calories}
+        double[] info = new double[]{0.0, 0.0, 0.0, 0.0};
+        for (FoodItem food : foods) {
+            info[0] += food.getProtein();
+            info[1] += food.getFat();
+            info[2] += food.getCarbs();
+            info[3] += food.getCalories();
+        }
+
+        return info;
     }
 
     @Override

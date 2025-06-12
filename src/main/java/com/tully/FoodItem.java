@@ -31,6 +31,11 @@ public class FoodItem {
         this.calories = Math.round(calories * 100.0) / 100.0;
     }
 
+    public double[] getFoodInfo() {
+        return new double[]{protein, fat, carbs, calories};
+    }
+
+
     public String getName() {
         return name;
     }

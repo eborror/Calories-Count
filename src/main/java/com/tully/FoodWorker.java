@@ -12,19 +12,11 @@ import java.security.InvalidParameterException;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import java.util.ArrayList;
+ import io.github.cdimascio.dotenv.Dotenv;
 
 public class FoodWorker {
-    // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-	// CLEARTEXT API keys should NEVER be stored like this in production code!!!!
-    // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-    // However, I am putting my API key in this code on PURPOSE
-    // (because we don't have a server running this where I can store environment variables)
-    // (and I need the group to be able to use the API key for testing)
-    // Please don't abuse it thank you :)
-    private static final String API_KEY = "vBk2rRWZ4Xv3uGFLcequgOEv4iOTyXCCf1IKdzwc";
-
-    // private FoodList customFoods;
-    // private MealList customMeals;
+    Dotenv dotenv = Dotenv.configure().load();
+    private final String API_KEY = dotenv.get("API_KEY");
 
     public enum Sex {
         MALE,
@@ -63,8 +55,6 @@ public class FoodWorker {
     }
 
     public FoodWorker() {
-        // customFoods = new FoodList();
-        // customMeals = new MealList();
     }
 
     /**

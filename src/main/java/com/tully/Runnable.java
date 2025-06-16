@@ -4,7 +4,7 @@ public class Runnable {
     public static void main(String[] args) {
         FoodWorker fw = new FoodWorker();
 
-        FoodList foods = fw.search("white bread", 100);
+        FoodList foods = fw.search("white bread", 10);
         fw.printTable(foods);
 
         // FoodItem food1 = fw.createCustomFood("Literally Fat", 0, 99, 0, 1000);

@@ -1,4 +1,4 @@
-#Calories Count User Manual
+# Calories Count User Manual
 
 Table of Contents
 1. Introduction

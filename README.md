@@ -1,4 +1,4 @@
-Calories Count User Manual
+#Calories Count User Manual
 
 Table of Contents
 1. Introduction
@@ -10,7 +10,7 @@ Table of Contents
 	their daily caloric and macronutrient intake
 	for each day. Users can input the foods consumed in
 	a day and will be able to see their total macronutrients.
-	By inputting the user's information the app can track
+	By inputting the user's information, the app can track
 	the BMI and TDEE of the user.
 
 2. Installation Guide:

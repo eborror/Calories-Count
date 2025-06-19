@@ -29,6 +29,7 @@
     <Button text="Log Weight" onAction="#handleLogWeight"/>
     <ListView fx:id="weightHistoryList"/>
 
-    <Button text="Back to Primary View" onAction="#goBack" />
+    <Button text="Open Food Lookup" onAction="#switchToFoodLookup" />
+    <Button text="View Today's Logged Foods" onAction="#openTrackedFoods" />
 </VBox>
 

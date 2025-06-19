@@ -77,6 +77,6 @@ public class FoodItem {
     }
 
     public String toString() {
-        return "%-45s %6.1fg %7.1fg %8.1fg %8.0f\n".formatted(name, this.getProtein(), this.getFat(), this.getCarbs(), this.getCalories());
+        return String.format("%-45s %6.1fg %7.1fg %8.1fg %8.0f", name, protein, fat, carbs, calories);
     }
 }

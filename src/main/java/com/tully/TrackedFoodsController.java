@@ -1,0 +1,40 @@
+package com.tully;
+
+import javafx.fxml.FXML;
+import javafx.scene.control.*;
+import java.io.IOException;
+
+public class TrackedFoodsController {
+
+    @FXML private TableView<?> trackedTable;
+    @FXML private TableColumn<?, ?> nameColumn;
+    @FXML private TableColumn<?, ?> proteinColumn;
+    @FXML private TableColumn<?, ?> carbsColumn;
+    @FXML private TableColumn<?, ?> fatColumn;
+    @FXML private TableColumn<?, ?> caloriesColumn;
+
+    @FXML private Label totalProtein;
+    @FXML private Label totalCarbs;
+    @FXML private Label totalFat;
+    @FXML private Label totalCalories;
+
+    @FXML
+    private void handleExport() {
+        // Nonfunctional, need to implement still
+        System.out.println("Exporting to JSON...hopefully");
+    }
+
+    @FXML
+    private void openFoodLookup() {
+        try {
+            App.setRoot("FoodLookupView");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @FXML
+    private void goBack() throws IOException {
+        App.setRoot("primary");
+    }
+}

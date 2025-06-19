@@ -173,7 +173,7 @@ public class FoodWorker {
 
     public void printTable(FoodList foods) {
         System.out.println("|---------------------------------------------|--------|--------|--------|------------|");
-        System.out.println("    %-37s %12s %6s %9s %11s".formatted("Food", "Protein", "Fat", "Carbs", "Calories"));
+        System.out.println(String.format("    %-45s %6s %7s %8s %8s", "Food", "Protein", "Fat", "Carbs", "Calories"));
         System.out.println("|---------------------------------------------|--------|--------|--------|------------|");
 
         for (FoodItem food : foods) {

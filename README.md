@@ -5,9 +5,9 @@ A JavaFX-based application to help users track their daily caloric and macronutr
 ---
 
 ## 📖 Table of Contents
-1. [Introduction](#introduction)
-2. [Installation Guide](#installation-guide)
-3. [How to Use](#how-to-use)
+1. Introduction
+2. Installation Guide
+3. How to Use
 
 ---
 

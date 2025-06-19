@@ -37,13 +37,13 @@
         <HBox spacing="10.0">
             <children>
                 <Button text="Export to JSON file" onAction="#handleExport" />
-                <Button text="Open Food Lookup" onAction="#openFoodLookup" />
+                <Button text="Open Food Lookup" onAction="#switchToFoodLookup" />
             </children>
         </HBox>
 
         <HBox spacing="10.0">
             <children>
-                <Button text="Back to Primary View" onAction="#goBack" />
+                <Button text="Go to User Form" onAction="#switchToUserForm" />
             </children>
         </HBox>
 
@@ -53,3 +53,4 @@
         <Insets top="20.0" bottom="20.0" left="20.0" right="20.0" />
     </padding>
 </VBox>
+

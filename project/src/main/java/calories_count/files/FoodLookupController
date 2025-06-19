@@ -1,3 +1,11 @@
+//***********************************************************************
+//   FoodLookupController.java           House Tully
+//
+//  The FoodLookupController class manages user interactions and
+//  updates UI elements related to searching for food items and viewing
+//  nutrient information.
+//***********************************************************************
+
 package calories_count.files;
 
 import javafx.fxml.FXML;
@@ -6,6 +14,7 @@ import java.io.IOException;
 
 public class FoodLookupController {
 
+    // Macronutrient preview box
     @FXML private TextField foodInput;
     @FXML private Label proteinPreview;
     @FXML private Label carbsPreview;
@@ -27,17 +36,15 @@ public class FoodLookupController {
         System.out.println("Food added to log. (not actually though..)");
     }
 
+    // Switch view to Tracked Foods
     @FXML
-    private void openTrackedFoods() {
-        try {
-            App.setRoot("TrackedFoods");
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+    private void openTrackedFoods() throws IOException {
+        App.setRoot("TrackedFoods");
     }
 
+    // Switch view to User Form
     @FXML
-    private void goBack() throws IOException {
-        App.setRoot("primary");
+    private void switchToUserForm() throws IOException {
+        App.setRoot("user_form");
     }
 }

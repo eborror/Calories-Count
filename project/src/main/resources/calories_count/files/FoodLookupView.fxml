@@ -28,7 +28,7 @@
         </VBox>
 
         <Button text="View Today's Logged Foods" onAction="#openTrackedFoods" />
-        <Button text="Back to Primary View" onAction="#goBack" />
+        <Button text="Go to User Form" onAction="#switchToUserForm" />
 
     </children>
     <padding>

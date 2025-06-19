@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.chart.PieChart?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.geometry.Insets?>
+<?import javafx.geometry.Pos?>
+
+<VBox xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml"
+      fx:controller="calories_count.files.MacroChartController"
+      prefWidth="415" prefHeight="630"
+      alignment="CENTER" spacing="20">
+    <padding>
+        <Insets top="20" bottom="20" left="20" right="20"/>
+    </padding>
+    <children>
+        <PieChart fx:id="macroChart" prefWidth="350" prefHeight="350"/>
+        <Button text="Back" onAction="#goBack" />
+    </children>
+</VBox>

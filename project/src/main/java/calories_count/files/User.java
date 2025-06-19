@@ -1,3 +1,11 @@
+//***********************************************************************
+//   User.java           House Tully
+//
+//  The User class represents a user and stores their health information.
+//  Contains methods for calculating BMI/BMR/TDEE, and maintains the weight
+//  log.
+//***********************************************************************
+
 package calories_count.files;
 
 import java.io.Serializable;
@@ -8,6 +16,7 @@ import java.util.List;
 public class User implements Serializable {
     private static final long serialVersionUID = 1L;
 
+    // User info
     private String name;
     private int age;
     private String gender;
@@ -25,6 +34,7 @@ public class User implements Serializable {
         this.activityLevel = activityLevel;
     }
 
+    // Getters for user info
     public String getName() { return name; }
     public int getAge() { return age; }
     public String getGender() { return gender; }
@@ -33,11 +43,13 @@ public class User implements Serializable {
     public String getActivityLevel() { return activityLevel; }
     public List<WeightEntry> getWeightLog() { return weightLog; }
 
+    // Calculates the user's Body Mass Index (BMI)
     public double calculateBMI() {
         if (height == 0) return 0;
         return (weight / (height * height)) * 703;
     }
 
+    // Calculates the user's Basal Metabolic Rate (BMR)
     public double calculateBMR() {
         if (gender.equalsIgnoreCase("male")) {
             return 66 + (6.23 * weight) + (12.7 * height) - (6.8 * age);
@@ -46,6 +58,8 @@ public class User implements Serializable {
         }
     }
 
+    // Calculates the user's Total Daily Energy Expenditure (TDEE)
+    // Based on their BMR and activity level
     public double calculateTDEE() {
         double bmr = calculateBMR();
         double multiplier = switch (activityLevel.toLowerCase()) {
@@ -59,6 +73,7 @@ public class User implements Serializable {
         return bmr * multiplier;
     }
 
+    // Adds a new entry to the user's weight log with the current date
     public void addWeightEntry(double weight) {
         weightLog.add(new WeightEntry(LocalDate.now(), weight));
     }

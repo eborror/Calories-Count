@@ -1,4 +1,5 @@
 com\tully\FoodWorker$DataType.class
+com\tully\MacroChartController.class
 com\tully\UserFormController.class
 com\tully\FoodWorker$Activity.class
 com\tully\App.class
@@ -6,11 +7,9 @@ com\tully\FoodWorker$Sex.class
 com\tully\TrackedFoodsController.class
 com\tully\FoodList.class
 com\tully\PrimaryController.class
-com\tully\MacroChart$1.class
 com\tully\User.class
 com\tully\FoodLookupController.class
 com\tully\Runnable.class
 com\tully\WeightEntry.class
 com\tully\FoodItem.class
 com\tully\FoodWorker.class
-com\tully\MacroChart.class

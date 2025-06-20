@@ -40,6 +40,12 @@ public class FoodList implements Iterable<FoodItem> {
         foods.add(food);
     }
 
+    public void add(FoodItem[] foods) {
+        for (FoodItem f : foods) {
+            this.foods.add(f);
+        }
+    }
+
     public void remove(FoodItem food) {
         foods.remove(food);
     }

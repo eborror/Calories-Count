@@ -6,7 +6,7 @@
 
 <VBox alignment="CENTER" spacing="10" xmlns="http://javafx.com/javafx/8.0.171"
       xmlns:fx="http://javafx.com/fxml/1"
-      fx:controller="calories_count.files.UserFormController">
+      fx:controller="com.tully.UserFormController">
     <padding>
         <Insets top="20" bottom="20" left="20" right="20"/>
     </padding>

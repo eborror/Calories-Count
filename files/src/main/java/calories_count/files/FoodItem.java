@@ -76,6 +76,14 @@ public class FoodItem {
         this.calories = calories;
     }
 
+    public void scaleFood(int factor) {
+        // Default weight for food searches is 100g
+        protein *= factor;
+        fat *= factor; 
+        carbs *= factor;
+        calories *= factor;
+    }
+
     @Override
     public String toString() {
         return "%-45s %6.1fg %7.1fg %8.1fg %8.0f\n".formatted(name, this.getProtein(), this.getFat(), this.getCarbs(), this.getCalories());

@@ -9,27 +9,25 @@
       fx:controller="calories_count.files.FoodLookupController">
     <children>
 
-        <Label text="Food Lookup:" />
-        <TextField fx:id="foodInput" promptText="Enter food name" />
-        <Button text="Search" onAction="#handleSearch" />
-        <Button text="Add to Daily Log" onAction="#handleAdd" />
+        <Label text="Database Search" />
+        <HBox spacing="10">
+            <TextField fx:id="foodInput" promptText="Enter food name" HBox.hgrow="ALWAYS" />
+            <Button text="Search" onAction="#handleSearch" />
+        </HBox>
 
-        <VBox spacing="10.0" style="-fx-border-color: lightgray; -fx-border-radius: 5;">
+        <VBox fx:id="resultsBox" spacing="10.0" style="-fx-border-color: lightblue; -fx-border-radius: 5;">
             <children>
-                <Label text="Macronutrient Preview of Selected Food" />
-                <Label fx:id="proteinPreview" text="Protein: -- g" />
-                <Label fx:id="carbsPreview" text="Carbs: -- g" />
-                <Label fx:id="fatPreview" text="Fat: -- g" />
-                <Label fx:id="calPreview" text="Calories: -- cal" />
+                <Label fx:id="resultsPlaceholder" alignment="CENTER" maxWidth="Infinity" text="Search for a food!" />
             </children>
             <padding>
                 <Insets top="10.0" bottom="10.0" left="10.0" right="10.0" />
             </padding>
         </VBox>
 
-        <Button text="View Today's Logged Foods" onAction="#openTrackedFoods" />
-        <Button text="Back to Primary View" onAction="#goBack" />
-
+        <VBox spacing="10" alignment="BOTTOM_CENTER" VBox.vgrow="ALWAYS">
+            <Button text="View Today's Logged Foods" onAction="#openTrackedFoods" />
+            <Button text="Back to Primary View" onAction="#goBack" />
+        </VBox>
     </children>
     <padding>
         <Insets top="20.0" bottom="20.0" left="20.0" right="20.0" />

@@ -9,15 +9,31 @@
       fx:controller="calories_count.files.FoodLookupController">
     <children>
 
-        <Label text="Database Search" />
-        <HBox spacing="10">
+        <HBox alignment="CENTER" maxWidth="Infinity">
+            <Label text="Database Search" />
+        </HBox>
+        <HBox spacing="2.5">
             <TextField fx:id="foodInput" promptText="Enter food name" HBox.hgrow="ALWAYS" />
             <Button text="Search" onAction="#handleSearch" />
         </HBox>
 
-        <VBox fx:id="resultsBox" spacing="10.0" style="-fx-border-color: lightblue; -fx-border-radius: 5;">
+        <VBox fx:id="resultsBox" spacing="7.5" style="-fx-border-color: lightblue; -fx-border-radius: 5;">
             <children>
-                <Label fx:id="resultsPlaceholder" alignment="CENTER" maxWidth="Infinity" text="Search for a food!" />
+                <HBox fx:id="resultsPlaceholderBox" alignment="CENTER">
+                    <children>
+                        <Label fx:id="resultsPlaceholder" maxWidth="Infinity" text="Search for a food!" />
+                    </children>
+                </HBox>
+            </children>
+            <padding>
+                <Insets top="10.0" bottom="10.0" left="10.0" right="10.0" />
+            </padding>
+        </VBox>
+
+        <VBox fx:id="weightBox" spacing="5.0">
+            <children>
+                <Label fx:id="weightPlaceholder" alignment="CENTER" maxWidth="Infinity" text="Weight (g): (default 100)" />
+                <TextField fx:id="weightInput" alignment="CENTER" text="100" promptText="Enter food weight" onKeyReleased="#onWeightChanged" HBox.hgrow="ALWAYS" />
             </children>
             <padding>
                 <Insets top="10.0" bottom="10.0" left="10.0" right="10.0" />
@@ -25,8 +41,10 @@
         </VBox>
 
         <VBox spacing="10" alignment="BOTTOM_CENTER" VBox.vgrow="ALWAYS">
-            <Button text="View Today's Logged Foods" onAction="#openTrackedFoods" />
-            <Button text="Back to Primary View" onAction="#goBack" />
+            <children>
+                <Button text="View Today's Logged Foods" onAction="#openTrackedFoods" />
+                <Button text="Back to Primary View" onAction="#goBack" />
+            </children>
         </VBox>
     </children>
     <padding>

@@ -61,27 +61,27 @@ public class FoodItem {
     }
 
     public void setProtein(double protein) {
-        this.protein = protein;
+        this.protein = Math.round(protein * 10.0) / 10.0;
     }
 
     public void setFat(double fat) {
-        this.fat = fat;
+        this.fat = Math.round(fat * 10.0) / 10.0;
     }
 
     public void setCarbs(double carbs) {
-        this.carbs = carbs;
+        this.carbs = Math.round(carbs * 10.0) / 10.0;
     }
 
     public void setCalories(double calories) {
-        this.calories = calories;
+        this.calories = Math.round(calories * 10.0) / 10.0;
     }
 
-    public void scaleFood(int factor) {
+    public void scaleFood(double factor) {
         // Default weight for food searches is 100g
-        protein *= factor;
-        fat *= factor; 
-        carbs *= factor;
-        calories *= factor;
+        setProtein(protein * factor);
+        setFat(fat * factor);
+        setCarbs(carbs * factor);
+        setCalories(calories * factor);
     }
 
     @Override

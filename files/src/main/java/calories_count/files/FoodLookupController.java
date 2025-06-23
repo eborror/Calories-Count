@@ -10,82 +10,129 @@ import java.util.List;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.input.KeyEvent;
 
 import javafx.scene.control.Button;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
 public class FoodLookupController {
-
     @FXML private TextField foodInput;
-    @FXML private Label proteinPreview;
-    @FXML private Label carbsPreview;
-    @FXML private Label fatPreview;
-    @FXML private Label calPreview;
     @FXML private VBox resultsBox;
+    @FXML private HBox resultsPlaceholderBox;
     @FXML private Label resultsPlaceholder;
-
+    @FXML private VBox weightBox;
+    @FXML private TextField weightInput;
     
+    FoodList results;
+
+    @FXML
+    public void initialize() {
+        weightBox.setVisible(false);
+        weightBox.setManaged(false);
+        resultsPlaceholder.setVisible(true);
+        resultsPlaceholder.setManaged(true);
+    }
+
     @FXML
     private void handleSearch() {
-        resultsBox.getChildren().clear();
+        handleSearch(1.0, true);
+    }
 
+    private void handleSearch(double scaleFactor, boolean newSearch) {
+        // Remove current results, if they exist (do not remove the placeholder text)
+        resultsBox.getChildren().removeIf(node -> node != resultsPlaceholderBox);
+        
         String foodName = foodInput.getText().trim();
         if (foodName.isEmpty()) {
-            resultsBox.getChildren().add(new Label("Search for a food!"));
+            resultsPlaceholder.setText("Search for a food!");
+            resultsPlaceholderBox.setVisible(true);
+            resultsPlaceholderBox.setManaged(true);
+            weightBox.setVisible(false);
+            weightBox.setManaged(false);
+
             return;
         }
 
-        FoodWorker foodWorker = new FoodWorker(); // instantiate
-        FoodList results = foodWorker.search(foodName); // get list
+        if (newSearch == true) {
+            FoodWorker foodWorker = new FoodWorker(); // instantiate
+            results = foodWorker.search(foodName); // get list
+        }
 
         int length = results.length();
         final int MAX_RESULTS_LENGTH = 8;
         if (length == 0) {
-            resultsBox.getChildren().add(new Label("No results found."));
+            resultsPlaceholder.setText("No results found.");
+            resultsPlaceholderBox.setVisible(true);
+            resultsPlaceholderBox.setManaged(true);
 
-            proteinPreview.setText("Protein: ? g");
-            carbsPreview.setText("Carbs: ? g");
-            fatPreview.setText("Fat: ? g");
-            calPreview.setText("Calories: ? cal");
+            weightBox.setVisible(false);
+            weightBox.setManaged(false);
             return;
         } else if (length > 5) {
             length = MAX_RESULTS_LENGTH;
         }
 
+        resultsPlaceholderBox.setVisible(false);
+        resultsPlaceholderBox.setManaged(false);
+        weightBox.setVisible(true);
+        weightBox.setManaged(true);
         for (int i = 0; i < length; i++) {
             FoodItem item = results.get(i);
+
             HBox row = new HBox(10);
             row.setPrefWidth(400);
             row.setFillHeight(true);
+            
 
             String name = item.getName();
-            if (name.length() > 50) {
-                name = name.substring(0, 17) + "...";
+            if (name.length() > 40) {
+                name = name.substring(0, 41) + "...";
             }
 
             Label label = new Label(String.format("%s\n%.1fg P, %.1fg F, %.1fg C, %.0f Cal",
-                    name, item.getProtein(), item.getFat(), item.getCarbs(), item.getCalories()));
+                    name, 
+                    item.getProtein() * scaleFactor,
+                    item.getFat() * scaleFactor, 
+                    item.getCarbs() * scaleFactor, 
+                    item.getCalories() * scaleFactor
+                    ));
             label.setWrapText(true);
             label.setMaxWidth(Double.MAX_VALUE);
             HBox.setHgrow(label, javafx.scene.layout.Priority.ALWAYS);
 
             Button addButton = new Button("Add");
             addButton.setMinWidth(60);
-            addButton.setOnAction(e -> handleAdd(item));
+            addButton.setOnAction(e -> handleAdd(item, scaleFactor));
 
             row.getChildren().addAll(label, addButton);
             resultsBox.getChildren().add(row);
         }
     }
 
-    private void handleAdd(FoodItem item) {
-        String foodName = foodInput.getText().trim();
+    @FXML
+    private void onWeightChanged(KeyEvent event) {
+        try {
+            if (!weightInput.getText().strip().isEmpty()) {
+                double value = Double.parseDouble(weightInput.getText());
 
-        FoodWorker foodWorker = new FoodWorker(); // instantiate
-        FoodList results = foodWorker.search(foodName); // get list
+                if (value <= 0) {
+                    handleSearch(0.0, false);
+                } else {
+                    // Normalize scaleFactor (100g = 1.0 multiplier since all foodItem data is per 100g)
+                    handleSearch(value/100.0, false);
+                }
+            } else {
+                handleSearch(0.0, false);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
+    private void handleAdd(FoodItem item, double scaleFactor) {
         if (item == null) return;
+        item.scaleFood(scaleFactor);
 
         try (BufferedWriter writer = new BufferedWriter(new FileWriter("foodLog.txt", true))) {
             String today = java.time.LocalDate.now().toString(); // e.g. "2025-06-19"

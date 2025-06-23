@@ -15,13 +15,6 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 public class FoodWorker {
-    // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-	// CLEARTEXT API keys should NEVER be stored like this in production code!!!!
-    // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-    // However, I am putting my API key in this code on PURPOSE
-    // (because we don't have a server running this where I can store environment variables)
-    // (and I need the group to be able to use the API key for testing)
-    // Please don't abuse it thank you :)
     private static final String API_KEY = "vBk2rRWZ4Xv3uGFLcequgOEv4iOTyXCCf1IKdzwc";
 
     // private FoodList customFoods;
@@ -174,7 +167,7 @@ public class FoodWorker {
     }
 
     public FoodList search(String foodQuery) {
-        return search(foodQuery, 10);
+        return search(foodQuery, 8);
     }
 
     public FoodList search(String foodQuery, int resultCount, DataType dataType) {

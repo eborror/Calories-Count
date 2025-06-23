@@ -40,7 +40,7 @@ public class FoodLookupController {
         FoodList results = foodWorker.search(foodName); // get list
 
         int length = results.length();
-        final int MAX_RESULTS_LENGTH = 10;
+        final int MAX_RESULTS_LENGTH = 8;
         if (length == 0) {
             resultsBox.getChildren().add(new Label("No results found."));
 

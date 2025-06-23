@@ -1,5 +1,10 @@
 package calories_count.files;
 
+//***********************************************************************
+//  The UserFormController class handles user input for personal data,
+//  calculates BMI/TDEE, and manages weight history logging.
+//***********************************************************************
+
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -30,7 +35,7 @@ public class UserFormController implements Initializable {
     @FXML private TextField logWeightField;
     @FXML private ListView<String> weightHistoryList;
 
-
+    // Initializes form by setting combo box values and loading existing user info if available
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         genderBox.setItems(FXCollections.observableArrayList("Male", "Female", "Other"));
@@ -39,6 +44,7 @@ public class UserFormController implements Initializable {
 
         User previousUser = loadUserFromFile();
         if (previousUser != null) {
+            // Fill the form with saved user info
             nameField.setText(previousUser.getName());
             ageField.setText(String.valueOf(previousUser.getAge()));
             genderBox.setValue(previousUser.getGender());
@@ -56,6 +62,8 @@ public class UserFormController implements Initializable {
         Platform.runLater(() -> genderBox.requestFocus()); // Keep name prompt text visible
     }
 
+    // Handles the 'calculate' button click
+    // Utilizes user info to create a new instance of 'User', and sets value of BMI/TDEE to display
     @FXML
     private void handleCalculate() {
         String name = nameField.getText();
@@ -77,6 +85,8 @@ public class UserFormController implements Initializable {
         tdeeLabel.setText(String.format("TDEE: %.2f", tdee));
     }
 
+    // Handles the 'log weight' button click
+    // Adds a new entry to the user's weight log and updates the display
     @FXML
     private void handleLogWeight() {
         if (App.currentUser == null) return;
@@ -91,6 +101,7 @@ public class UserFormController implements Initializable {
         }
     }
 
+    // Updates the list view with the current weight log
     private void updateWeightHistory() {
         weightHistoryList.getItems().clear();
         for (WeightEntry entry : App.currentUser.getWeightLog()) {
@@ -103,6 +114,7 @@ public class UserFormController implements Initializable {
         App.setRoot("primary");
     }
 
+    // Saves user data to a file called 'user.dat'
     private void saveUserToFile(User user) {
         try (ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream("user.dat"))) {
             out.writeObject(user);
@@ -111,6 +123,7 @@ public class UserFormController implements Initializable {
         }
     }
 
+    // Loads user data from the local file if available
     private User loadUserFromFile() {
         try (ObjectInputStream in = new ObjectInputStream(new FileInputStream("user.dat"))) {
             return (User) in.readObject();

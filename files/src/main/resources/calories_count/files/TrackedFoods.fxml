@@ -7,13 +7,25 @@
 <VBox alignment="TOP_LEFT" spacing="15.0" xmlns="http://javafx.com/javafx/8.0.171"
       xmlns:fx="http://javafx.com/fxml/1"
       fx:controller="calories_count.files.TrackedFoodsController">
+
+    <padding>
+        <Insets top="20.0" bottom="20.0" left="20.0" right="20.0" />
+    </padding>
     <children>
 
-        <Label text="Today's Logged Foods" style="-fx-font-size: 16;" />
+        <HBox alignment="TOP_CENTER">
+            <children>
+                <Label text="Today's Logged Foods" style="-fx-font-size: 16;" />
+            </children>
+        </HBox>
 
-        <TableView fx:id="trackedTable" prefHeight="200.0">
+        <TableView fx:id="trackedTable" prefHeight="300.0">
+            <!-- Ensures the width of the columns is the width of the table -->
+            <columnResizePolicy>
+                <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+            </columnResizePolicy>
             <placeholder>
-                <Label text="Placeholder text for empty table" />
+                <Label text="Log a food to see overview" />
             </placeholder>
             <columns>
                 <TableColumn fx:id="nameColumn" text="Food" prefWidth="55.0" />
@@ -24,9 +36,9 @@
             </columns>
         </TableView>
 
-        <VBox spacing="10.0">
+        <VBox spacing="10.0" alignment="CENTER">
             <children>
-                <Label text="Daily Totals" />
+                <Label text="Daily Total:" style="-fx-font-size: 16;"/>
                 <Label fx:id="totalProtein" text="Protein: -- g" />
                 <Label fx:id="totalCarbs" text="Carbs: -- g" />
                 <Label fx:id="totalFat" text="Fat: -- g" />
@@ -34,21 +46,12 @@
             </children>
         </VBox>
 
-        <HBox spacing="10.0">
+        <VBox spacing="10.0" alignment="BOTTOM_CENTER" VBox.vgrow="ALWAYS">
             <children>
                 <Button text="Open Food Lookup" onAction="#openFoodLookup" />
-            </children>
-        </HBox>
-
-        <HBox spacing="10.0">
-            <children>
                 <Button text="Back to Primary View" onAction="#returnToPrimary" />
             </children>
-        </HBox>
+        </VBox>
 
     </children>
-
-    <padding>
-        <Insets top="20.0" bottom="20.0" left="20.0" right="20.0" />
-    </padding>
 </VBox>

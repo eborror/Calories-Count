@@ -1,0 +1,3 @@
+===2025-06-23===
+name protein fat carbs calories
+Bread, white 9.4 3.6 49.2 267

@@ -57,6 +57,7 @@ public class FoodLookupController {
         if (newSearch == true) {
             FoodWorker foodWorker = new FoodWorker(); // instantiate
             results = foodWorker.search(foodName); // get list
+            weightInput.setText("100");
         }
 
         int length = results.length();

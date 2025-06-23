@@ -8,7 +8,6 @@ calories_count\files\User.class
 calories_count\files\FoodWorker$DataType.class
 calories_count\files\UserFormController.class
 calories_count\files\WeightEntry.class
-calories_count\files\SecondaryController.class
 module-info.class
 calories_count\files\FoodWorker.class
 calories_count\files\FoodItem.class

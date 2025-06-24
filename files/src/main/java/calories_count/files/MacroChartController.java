@@ -10,6 +10,7 @@ import java.text.DecimalFormat;
 import javafx.fxml.FXML;
 import javafx.scene.chart.PieChart;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
 
 public class MacroChartController {
@@ -17,7 +18,8 @@ public class MacroChartController {
     @FXML private PieChart macroChart;
     @FXML private VBox chartBox;
     @FXML private VBox chartPlaceholder;
-
+    @FXML private Label macroRatio;
+    @FXML private Label macroRatioLabel;
 
     @FXML
     private void initialize() {
@@ -63,6 +65,14 @@ public class MacroChartController {
             }
         } catch (Exception e) {
             e.printStackTrace();
+            chartPlaceholder.setVisible(true);
+            chartPlaceholder.setManaged(true);
+            macroChart.setVisible(false);
+            macroChart.setManaged(false);
+            macroRatio.setVisible(false);
+            macroRatio.setManaged(false);
+            macroRatioLabel.setVisible(false);
+            macroRatioLabel.setManaged(false);
             return;
         }
 
@@ -71,12 +81,20 @@ public class MacroChartController {
             chartPlaceholder.setVisible(true);
             chartPlaceholder.setManaged(true);
             macroChart.setVisible(false);
-            macroChart.setVisible(false);
+            macroChart.setManaged(false);
+            macroRatio.setVisible(false);
+            macroRatio.setManaged(false);
+            macroRatioLabel.setVisible(false);
+            macroRatioLabel.setManaged(false);
         } else {
             chartPlaceholder.setVisible(false);
             chartPlaceholder.setManaged(false);
             macroChart.setVisible(true);
-            macroChart.setVisible(true);
+            macroChart.setManaged(true);
+            macroRatio.setVisible(true);
+            macroRatio.setManaged(true);
+            macroRatioLabel.setVisible(true);
+            macroRatioLabel.setManaged(true);
 
             macroChart.getData().clear();
             macroChart.getData().add(new PieChart.Data("Protein:", totalProtein));
@@ -87,6 +105,38 @@ public class MacroChartController {
             for (PieChart.Data data : macroChart.getData()) {
                 data.setName(data.getName() + " " + df.format(data.getPieValue()) + "g");
             }
+
+
+            double proteinCalories = totalProtein * 4;
+            double carbCalories = totalCarbs * 4;
+            double fatCalories = totalFat * 9;
+            // 1g Protein ~ 4 Cal, 1g Carb ~ 4 Cal, 1g Fat ~ 9 Cal
+            double macroCalorieEstimate = proteinCalories + carbCalories + fatCalories;
+            long proteinPercent = Math.round((proteinCalories / macroCalorieEstimate) * 100);
+            long carbPercent = Math.round((carbCalories / macroCalorieEstimate) * 100);
+            long fatPercent = Math.round((fatCalories / macroCalorieEstimate) * 100);
+
+            long total = proteinPercent + carbPercent + fatPercent;
+            // Ensure that percentages equal 100
+            if (total > 100) {
+                if (proteinPercent >= carbPercent && proteinPercent >= fatPercent) {
+                    proteinPercent--;
+                } else if (carbPercent >= fatPercent) {
+                    carbPercent--;
+                } else {
+                    fatPercent--;
+                }
+            } else if (total < 100) {
+                if (proteinPercent >= carbPercent && proteinPercent >= fatPercent) {
+                    proteinPercent++;
+                } else if (carbPercent >= fatPercent) {
+                    carbPercent++;
+                } else {
+                    fatPercent++;
+                }
+            }
+
+            macroRatio.setText(String.format("%d%%             %d%%             %d%%", Math.round(proteinPercent), Math.round(carbPercent), Math.round(fatPercent)));
         }
     }
 

@@ -91,12 +91,12 @@ public class FoodLookupController {
                 name = name.substring(0, 41) + "...";
             }
 
-            Label label = new Label(String.format("%s\n%.1fg P, %.1fg F, %.1fg C, %.0f Cal",
+            Label label = new Label(String.format("%s\n%.1fg P, %.1fg F, %.1fg C, %d Cal",
                     name, 
                     item.getProtein() * scaleFactor,
                     item.getFat() * scaleFactor, 
                     item.getCarbs() * scaleFactor, 
-                    item.getCalories() * scaleFactor
+                    Math.round(item.getCalories() * scaleFactor)
                     ));
             label.setWrapText(true);
             label.setMaxWidth(Double.MAX_VALUE);
@@ -148,12 +148,12 @@ public class FoodLookupController {
             }
 
             // Write the food item
-            writer.write(String.format("%s %.1f %.1f %.1f %.0f\n",
+            writer.write(String.format("%s %.1f %.1f %.1f %d\n",
                     item.getName(),
                     item.getProtein(),
                     item.getFat(),
                     item.getCarbs(),
-                    item.getCalories()));
+                    Math.round(item.getCalories())));
 
             System.out.println("Food logged.");
         } catch (IOException e) {

@@ -24,16 +24,18 @@
         
         <VBox fx:id="chartPlaceholder" alignment="CENTER" VBox.vgrow="ALWAYS">
             <padding>
-                <Insets top="200" />
+                <Insets top="100" />
             </padding>
             <children>
-                <Button text="Log a food to see overview" prefWidth="250" prefHeight="150" onAction="#switchToFoodLookup" />
+                <Button text="Log a food to see overview" prefWidth="200" prefHeight="100" onAction="#switchToFoodLookup" />
             </children>
         </VBox>
 
         <VBox fx:id="chartBox" maxWidth="450" maxHeight="450" alignment="CENTER" VBox.vgrow="ALWAYS">
             <children>
                 <PieChart fx:id="macroChart" prefWidth="350" prefHeight="350"/>
+                <Label fx:id="macroRatio" text="" style="-fx-font-size: 16;"/>
+                <Label fx:id="macroRatioLabel" text="Percentage of daily calories" style="-fx-font-size: 12;"/>
             </children>
         </VBox>
 

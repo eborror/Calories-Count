@@ -4,6 +4,7 @@ calories_count\files\MacroChartController.class
 calories_count\files\App.class
 calories_count\files\FoodList.class
 calories_count\files\TrackedFoodsController.class
+calories_count\files\FoodWorker$1.class
 calories_count\files\User.class
 calories_count\files\FoodWorker$DataType.class
 calories_count\files\UserFormController.class

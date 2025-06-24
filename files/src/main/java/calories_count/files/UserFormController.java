@@ -52,8 +52,23 @@ public class UserFormController implements Initializable {
             heightField.setText(String.valueOf(previousUser.getHeight()));
             activityBox.setValue(previousUser.getActivityLevel());
 
-            bmiLabel.setText(String.format("BMI: %.2f", previousUser.calculateBMI()));
-            tdeeLabel.setText(String.format("TDEE: %.2f", previousUser.calculateTDEE()));
+            double bmi = previousUser.calculateBMI();
+            String bmiCategory;
+            if (bmi < 18.5) {
+                bmiCategory = "(Underweight)";
+            } else if (bmi < 24.9) {
+                bmiCategory = "(Healthy Weight)";
+            } else if (bmi < 29.9) {
+                bmiCategory = "(Overweight)";
+            } else if (bmi < 34.9) {
+                bmiCategory = "(Class 1 Obesity)";
+            } else if (bmi < 39.9) {
+                bmiCategory = "(Class 2 Obesity)";
+            } else {
+                bmiCategory = "(Class 3 Obesity)";
+            }
+            bmiLabel.setText(String.format("BMI: %.2f %s", bmi, bmiCategory));
+            tdeeLabel.setText(String.format("TDEE: %d Calories", Math.round(previousUser.calculateTDEE())));
 
             App.currentUser = previousUser;
             updateWeightHistory();
@@ -80,9 +95,22 @@ public class UserFormController implements Initializable {
 
         double bmi = user.calculateBMI();
         double tdee = user.calculateTDEE();
-
-        bmiLabel.setText(String.format("BMI: %.2f", bmi));
-        tdeeLabel.setText(String.format("TDEE: %.2f", tdee));
+        String bmiCategory;
+        if (bmi < 18.5) {
+            bmiCategory = "(Underweight)";
+        } else if (bmi < 24.9) {
+            bmiCategory = "(Healthy Weight)";
+        } else if (bmi < 29.9) {
+            bmiCategory = "(Overweight)";
+        } else if (bmi < 34.9) {
+            bmiCategory = "(Class 1 Obesity)";
+        } else if (bmi < 39.9) {
+            bmiCategory = "(Class 2 Obesity)";
+        } else {
+            bmiCategory = "(Class 3 Obesity)";
+        }
+        bmiLabel.setText(String.format("BMI: %.2f %s", bmi, bmiCategory));
+        tdeeLabel.setText(String.format("TDEE: %d Calories", Math.round(tdee)));
     }
 
     // Handles the 'log weight' button click

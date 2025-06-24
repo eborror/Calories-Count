@@ -94,10 +94,10 @@ public class TrackedFoodsController implements Initializable {
         }
 
         trackedTable.setItems(foodsToday);
-        totalProtein.setText("Protein: " + totalP + "g");
-        totalCarbs.setText("Carbs: " + totalC + "g");
-        totalFat.setText("Fat: " + totalF + "g");
-        totalCalories.setText("Calories: " + totalCal);
+        totalProtein.setText(String.format("Protein: %.1fg", totalP));
+        totalCarbs.setText(String.format("Carbs: %.1fg", totalC));
+        totalFat.setText(String.format("Fat: %.1fg", totalF));
+        totalCalories.setText(String.format("Calories: %d", Math.round(totalCal)));
     }
 
     /*@FXML

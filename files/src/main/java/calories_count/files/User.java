@@ -21,9 +21,11 @@ public class User implements Serializable {
     private final double weight; // pounds
     private final double height; // inches
     private final String activityLevel;
+    private final String calorieGoal;
     private final List<WeightEntry> weightLog = new ArrayList<>();
 
-    public User(String name, int age, String gender, double weight, double height, String activityLevel) {
+    public User(String calorieGoal, String name, int age, String gender, double weight, double height, String activityLevel) {
+        this.calorieGoal = calorieGoal;
         this.name = name;
         this.age = age;
         this.gender = gender;
@@ -39,6 +41,7 @@ public class User implements Serializable {
     public double getWeight() { return weight; }
     public double getHeight() { return height; }
     public String getActivityLevel() { return activityLevel; }
+    public String getCalorieGoal() { return calorieGoal; }
     public List<WeightEntry> getWeightLog() { return weightLog; }
 
     // Calculates the user's Body Mass Index (BMI)
@@ -59,38 +62,45 @@ public class User implements Serializable {
     // Calculates the user's Total Daily Energy Expenditure (TDEE)
     // Based on their BMR and activity level
     public double calculateTDEE() {
-    double bmr = calculateBMR();
-    double multiplier;
+        double bmr = calculateBMR();
+        double multiplier;
+        
+        int goalOffset;
+        if (this.getCalorieGoal().equals("Bulk")) {
+            goalOffset = 500;
+        } else if (this.getCalorieGoal().equals("Cut")) {
+            goalOffset = -500;
+        } else {
+            goalOffset = 0;
+        }
+        String level = activityLevel.toLowerCase();
 
-    String level = activityLevel.toLowerCase();
+        switch (level) {
+            case "sedentary":
+                multiplier = 1.2;
+                break;
+            case "lightly active":
+                multiplier = 1.375;
+                break;
+            case "moderately active":
+                multiplier = 1.55;
+                break;
+            case "very active":
+                multiplier = 1.725;
+                break;
+            case "super active":
+                multiplier = 1.9;
+                break;
+            default:
+                multiplier = 1.2; // default
+                break;
+        }
 
-    switch (level) {
-        case "sedentary":
-            multiplier = 1.2;
-            break;
-        case "lightly active":
-            multiplier = 1.375;
-            break;
-        case "moderately active":
-            multiplier = 1.55;
-            break;
-        case "very active":
-            multiplier = 1.725;
-            break;
-        case "super active":
-            multiplier = 1.9;
-            break;
-        default:
-            multiplier = 1.2; // default
-            break;
+        return bmr * multiplier + goalOffset;
     }
-
-    return bmr * multiplier;
-}
 
     // Adds a new entry to the user's weight log with the current date
     public void addWeightEntry(double weight) {
         weightLog.add(new WeightEntry(LocalDate.now(), weight));
     }
-
 }

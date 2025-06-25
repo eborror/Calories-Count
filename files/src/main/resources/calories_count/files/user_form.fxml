@@ -19,8 +19,9 @@
     <TextField fx:id="weightField" promptText="Weight (lbs)" />
     <TextField fx:id="heightField" promptText="Height (inches)" />
     <ComboBox fx:id="activityBox" promptText="Activity Level" />
+    <ComboBox fx:id="goalBox" promptText="Weight Goal" />
 
-    <Button text="Calculate BMI and TDEE" onAction="#handleCalculate" />
+    <Button text="Calculate BMI/TDEE and Sve" onAction="#handleCalculate" />
 
     <Label fx:id="bmiLabel" text="BMI: " />
     <Label fx:id="tdeeLabel" text="TDEE: " />

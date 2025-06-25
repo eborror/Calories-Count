@@ -34,6 +34,7 @@ public class UserFormController implements Initializable {
     @FXML private Label tdeeLabel;
     @FXML private TextField logWeightField;
     @FXML private ListView<String> weightHistoryList;
+    @FXML private ComboBox<String> goalBox;
 
     // Initializes form by setting combo box values and loading existing user info if available
     @Override
@@ -41,6 +42,7 @@ public class UserFormController implements Initializable {
         genderBox.setItems(FXCollections.observableArrayList("Male", "Female", "Other"));
         activityBox.setItems(FXCollections.observableArrayList("Sedentary", "Lightly Active",
                 "Moderately Active", "Very Active", "Extra Active"));
+        goalBox.setItems(FXCollections.observableArrayList("Cut", "Maintain", "Bulk"));
 
         User previousUser = loadUserFromFile();
         if (previousUser != null) {
@@ -51,6 +53,17 @@ public class UserFormController implements Initializable {
             weightField.setText(String.valueOf(previousUser.getWeight()));
             heightField.setText(String.valueOf(previousUser.getHeight()));
             activityBox.setValue(previousUser.getActivityLevel());
+            goalBox.setValue(previousUser.getCalorieGoal());
+
+            int goalOffset;
+            String calorieGoal = previousUser.getCalorieGoal();
+            if (calorieGoal == "Bulk") {
+                goalOffset = 500;
+            } else if (calorieGoal == "Cut") {
+                goalOffset = -500;
+            } else {
+                goalOffset = 0;
+            }
 
             double bmi = previousUser.calculateBMI();
             String bmiCategory;
@@ -87,10 +100,19 @@ public class UserFormController implements Initializable {
         double weight = Double.parseDouble(weightField.getText());
         double height = Double.parseDouble(heightField.getText());
         String activityLevel = activityBox.getValue();
+        String calorieGoal = goalBox.getValue();
 
-        User user = new User(name, age, gender, weight, height, activityLevel);
+        User user = new User(calorieGoal, name, age, gender, weight, height, activityLevel);
         App.currentUser = user;
 
+        int goalOffset;
+        if (calorieGoal == "Bulk") {
+            goalOffset = 500;
+        } else if (calorieGoal == "Cut") {
+            goalOffset = -500;
+        } else {
+            goalOffset = 0;
+        }
         saveUserToFile(user);
 
         double bmi = user.calculateBMI();

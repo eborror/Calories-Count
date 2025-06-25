@@ -105,9 +105,9 @@ public class TrackedFoodsController implements Initializable {
 
         User previousUser = loadUserFromFile();
         if (previousUser != null) {
-            calorieGoal.setText(String.format("Distance from goal: %d Calories", Math.round(previousUser.calculateTDEE() - totalCal)));
+            calorieGoal.setText(String.format("Distance from TDEE: %d Calories", Math.round(previousUser.calculateTDEE() - totalCal)));
         } else {
-            calorieGoal.setText("Enter user info to get calorie goal.");
+            calorieGoal.setText("Enter user info to get TDEE.");
         }
     }
 

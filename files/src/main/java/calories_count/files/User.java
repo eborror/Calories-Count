@@ -66,9 +66,13 @@ public class User implements Serializable {
         double multiplier;
         
         int goalOffset;
-        if (this.getCalorieGoal().equals("Bulk")) {
+        if (this.getCalorieGoal().equals("Moderate Bulk")) {
             goalOffset = 500;
-        } else if (this.getCalorieGoal().equals("Cut")) {
+        } else if (this.getCalorieGoal().equals("Light Bulk")) {
+            goalOffset = 250;
+        } else if (this.getCalorieGoal().equals("Light Cut")) {
+            goalOffset = -250;
+        } else if (this.getCalorieGoal().equals("Moderate Cut")) {
             goalOffset = -500;
         } else {
             goalOffset = 0;

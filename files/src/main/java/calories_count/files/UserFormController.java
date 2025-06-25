@@ -42,7 +42,7 @@ public class UserFormController implements Initializable {
         genderBox.setItems(FXCollections.observableArrayList("Male", "Female", "Other"));
         activityBox.setItems(FXCollections.observableArrayList("Sedentary", "Lightly Active",
                 "Moderately Active", "Very Active", "Extra Active"));
-        goalBox.setItems(FXCollections.observableArrayList("Cut", "Maintain", "Bulk"));
+        goalBox.setItems(FXCollections.observableArrayList("Moderate Cut", "Light Cut", "Maintain", "Light Bulk", "Moderate Bulk"));
 
         User previousUser = loadUserFromFile();
         if (previousUser != null) {
@@ -55,11 +55,15 @@ public class UserFormController implements Initializable {
             activityBox.setValue(previousUser.getActivityLevel());
             goalBox.setValue(previousUser.getCalorieGoal());
 
-            int goalOffset;
             String calorieGoal = previousUser.getCalorieGoal();
-            if (calorieGoal == "Bulk") {
+            int goalOffset;
+            if (calorieGoal.equals("Moderate Bulk")) {
                 goalOffset = 500;
-            } else if (calorieGoal == "Cut") {
+            } else if (calorieGoal.equals("Light Bulk")) {
+                goalOffset = 250;
+            } else if (calorieGoal.equals("Light Cut")) {
+                goalOffset = -250;
+            } else if (calorieGoal.equals("Moderate Cut")) {
                 goalOffset = -500;
             } else {
                 goalOffset = 0;
@@ -106,9 +110,13 @@ public class UserFormController implements Initializable {
         App.currentUser = user;
 
         int goalOffset;
-        if (calorieGoal == "Bulk") {
+        if (calorieGoal.equals("Moderate Bulk")) {
             goalOffset = 500;
-        } else if (calorieGoal == "Cut") {
+        } else if (calorieGoal.equals("Light Bulk")) {
+            goalOffset = 250;
+        } else if (calorieGoal.equals("Light Cut")) {
+            goalOffset = -250;
+        } else if (calorieGoal.equals("Moderate Cut")) {
             goalOffset = -500;
         } else {
             goalOffset = 0;

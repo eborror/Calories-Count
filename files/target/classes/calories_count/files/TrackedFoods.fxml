@@ -43,6 +43,7 @@
                 <Label fx:id="totalCarbs" text="Carbs: -- g" />
                 <Label fx:id="totalFat" text="Fat: -- g" />
                 <Label fx:id="totalCalories" text="Calories: --" />
+                <Label fx:id="calorieGoal" text="Distance from goal: --" />
             </children>
         </VBox>
 

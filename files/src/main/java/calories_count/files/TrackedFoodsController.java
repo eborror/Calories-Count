@@ -5,6 +5,9 @@ import java.io.FileReader;
 import java.net.URL;
 import java.time.LocalDate;
 import java.util.ResourceBundle;
+import java.io.ObjectInputStream;
+import java.io.FileInputStream;
+import java.io.IOException;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -28,6 +31,7 @@ public class TrackedFoodsController implements Initializable {
     @FXML private Label totalCarbs;
     @FXML private Label totalFat;
     @FXML private Label totalCalories;
+    @FXML private Label calorieGoal;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -98,6 +102,21 @@ public class TrackedFoodsController implements Initializable {
         totalCarbs.setText(String.format("Carbs: %.1fg", totalC));
         totalFat.setText(String.format("Fat: %.1fg", totalF));
         totalCalories.setText(String.format("Calories: %d", Math.round(totalCal)));
+
+        User previousUser = loadUserFromFile();
+        if (previousUser != null) {
+            calorieGoal.setText(String.format("Distance from goal: %d Calories", Math.round(previousUser.calculateTDEE() - totalCal)));
+        } else {
+            calorieGoal.setText("Enter user info to get calorie goal.");
+        }
+    }
+
+    private User loadUserFromFile() {
+        try (ObjectInputStream in = new ObjectInputStream(new FileInputStream("user.dat"))) {
+            return (User) in.readObject();
+        } catch (IOException | ClassNotFoundException e) {
+            return null; // Return null if file doesn't exist or error occurs
+        }
     }
 
     /*@FXML
